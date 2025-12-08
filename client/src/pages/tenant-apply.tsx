@@ -49,7 +49,7 @@ export default function TenantApply() {
               {/* Step 1: Personal Information */}
               {step === 1 && (
                 <div className="space-y-4" data-testid="form-step-1">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="firstName">First Name</Label>
                       <Input id="firstName" placeholder="John" data-testid="input-first-name" />
@@ -89,7 +89,7 @@ export default function TenantApply() {
                     <Label htmlFor="jobTitle">Job Title</Label>
                     <Input id="jobTitle" placeholder="Your position" data-testid="input-job-title" />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="startDate">Employment Start Date</Label>
                       <Input id="startDate" type="date" data-testid="input-employment-start" />

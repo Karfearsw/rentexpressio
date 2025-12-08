@@ -16,66 +16,67 @@ const tenants = [
 export default function LandlordTenants() {
   return (
     <DashboardLayout type="landlord">
-      <div className="flex flex-col gap-6">
-        <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:gap-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-heading font-bold">Tenants</h1>
-            <p className="text-muted-foreground">Manage your current tenant relationships</p>
+            <h1 className="text-2xl sm:text-3xl font-heading font-bold">Tenants</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground">Manage your current tenant relationships</p>
           </div>
-          <div className="flex gap-2 max-w-xs">
-            <Input placeholder="Search tenants..." data-testid="input-search-tenants" className="flex-1" />
-            <Button variant="outline" data-testid="button-search-tenants">Search</Button>
+          <div className="flex gap-2 w-full sm:max-w-xs">
+            <Input placeholder="Search tenants..." data-testid="input-search-tenants" className="flex-1 h-9 sm:h-10 text-xs sm:text-sm" />
+            <Button variant="outline" className="h-9 sm:h-10 text-xs sm:text-sm" data-testid="button-search-tenants">Search</Button>
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {tenants.map((tenant) => (
             <Card key={tenant.id} className="hover:shadow-lg transition-shadow" data-testid={`card-tenant-${tenant.id}`}>
-              <CardContent className="pt-6">
-                <div className="flex items-start gap-4 mb-4">
-                  <Avatar className="w-12 h-12">
+              <CardContent className="pt-4 sm:pt-6">
+                <div className="flex items-start gap-3 sm:gap-4 mb-4">
+                  <Avatar className="w-10 sm:w-12 h-10 sm:h-12">
                     <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${tenant.name}`} />
                     <AvatarFallback>{tenant.name.split(" ").map(n => n[0]).join("")}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
-                    <h3 className="font-bold text-lg" data-testid={`text-tenant-name-${tenant.id}`}>{tenant.name}</h3>
+                    <h3 className="font-bold text-base sm:text-lg" data-testid={`text-tenant-name-${tenant.id}`}>{tenant.name}</h3>
                     <p className="text-xs text-muted-foreground">{tenant.property}</p>
                   </div>
                   <Badge 
                     variant={tenant.status === "good" ? "default" : "destructive"}
                     data-testid={`status-tenant-${tenant.id}`}
+                    className="text-[10px] sm:text-xs"
                   >
                     {tenant.status === "good" ? "✓ Good" : "⚠ Alert"}
                   </Badge>
                 </div>
 
-                <div className="space-y-2 mb-4 text-sm">
+                <div className="space-y-2 mb-4 text-xs sm:text-sm">
                   <div className="flex items-center gap-2 text-muted-foreground" data-testid={`text-tenant-phone-${tenant.id}`}>
-                    <Phone className="w-4 h-4" />
+                    <Phone className="w-3 sm:w-4 h-3 sm:h-4" />
                     <span>{tenant.phone}</span>
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground" data-testid={`text-tenant-email-${tenant.id}`}>
-                    <Mail className="w-4 h-4" />
+                    <Mail className="w-3 sm:w-4 h-3 sm:h-4" />
                     <span>{tenant.email}</span>
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground" data-testid={`text-tenant-movein-${tenant.id}`}>
-                    <Clock className="w-4 h-4" />
+                    <Clock className="w-3 sm:w-4 h-3 sm:h-4" />
                     <span>Moved in {tenant.moveIn}</span>
                   </div>
                 </div>
 
                 {!tenant.rentPaid && (
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4 flex items-center gap-2 text-red-700 text-xs font-medium">
-                    <AlertCircle className="w-4 h-4" />
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-2 sm:p-3 mb-4 flex items-center gap-2 text-red-700 text-xs font-medium">
+                    <AlertCircle className="w-3 sm:w-4 h-3 sm:h-4" />
                     Rent payment overdue
                   </div>
                 )}
 
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="flex-1" data-testid={`button-message-tenant-${tenant.id}`}>
-                    <MessageCircle className="w-4 h-4 mr-1" /> Message
+                  <Button variant="outline" size="sm" className="flex-1 text-xs" data-testid={`button-message-tenant-${tenant.id}`}>
+                    <MessageCircle className="w-3 sm:w-4 h-3 sm:h-4 mr-1" /> Message
                   </Button>
-                  <Button variant="ghost" size="sm" className="flex-1" data-testid={`button-details-tenant-${tenant.id}`}>
+                  <Button variant="ghost" size="sm" className="flex-1 text-xs" data-testid={`button-details-tenant-${tenant.id}`}>
                     View Details
                   </Button>
                 </div>

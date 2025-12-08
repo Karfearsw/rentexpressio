@@ -26,40 +26,44 @@ export default function LandlordApplications() {
 
   return (
     <DashboardLayout type="landlord">
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4 sm:gap-6">
         <div>
-          <h1 className="text-3xl font-heading font-bold">Applications</h1>
-          <p className="text-muted-foreground">Review and manage tenant applications with screening results</p>
+          <h1 className="text-2xl sm:text-3xl font-heading font-bold">Applications</h1>
+          <p className="text-xs sm:text-sm text-muted-foreground">Review and manage tenant applications with screening results</p>
         </div>
 
         <Tabs defaultValue="all" className="w-full">
-          <TabsList className="grid w-full max-w-md grid-cols-4">
-            <TabsTrigger value="all" data-testid="tab-all-applications">All</TabsTrigger>
-            <TabsTrigger value="pending" data-testid="tab-pending-applications">Pending</TabsTrigger>
-            <TabsTrigger value="approved" data-testid="tab-approved-applications">Approved</TabsTrigger>
-            <TabsTrigger value="rejected" data-testid="tab-rejected-applications">Rejected</TabsTrigger>
+          <TabsList className="grid w-full max-w-md grid-cols-2 sm:grid-cols-4 h-auto sm:h-10 gap-2 sm:gap-0">
+            <TabsTrigger value="all" className="text-xs sm:text-sm" data-testid="tab-all-applications">All</TabsTrigger>
+            <TabsTrigger value="pending" className="text-xs sm:text-sm" data-testid="tab-pending-applications">Pending</TabsTrigger>
+            <TabsTrigger value="approved" className="text-xs sm:text-sm" data-testid="tab-approved-applications">Approved</TabsTrigger>
+            <TabsTrigger value="rejected" className="text-xs sm:text-sm" data-testid="tab-rejected-applications">Rejected</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="all" className="space-y-4">
+          <TabsContent value="all" className="space-y-3 sm:space-y-4 mt-4">
             {applications.map((app) => (
               <Card key={app.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => setSelectedApp(app)}>
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <h3 className="font-bold text-lg" data-testid={`text-applicant-${app.id}`}>{app.name}</h3>
-                      <p className="text-sm text-muted-foreground mb-3">{app.property}</p>
+                <CardContent className="pt-4 sm:pt-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex-1 space-y-2">
+                      <div>
+                        <h3 className="font-bold text-base sm:text-lg" data-testid={`text-applicant-${app.id}`}>{app.name}</h3>
+                        <p className="text-xs sm:text-sm text-muted-foreground">{app.property}</p>
+                      </div>
                       <div className="flex flex-wrap gap-2">
-                        <Badge variant="outline" data-testid={`badge-credit-${app.id}`}>Credit: {app.credit}</Badge>
-                        <Badge variant="outline" data-testid={`badge-employment-${app.id}`}>Employment: {app.employment}</Badge>
-                        <Badge variant="outline" data-testid={`badge-eviction-${app.id}`}>Eviction: {app.eviction}</Badge>
+                        <Badge variant="outline" className="text-[10px] sm:text-xs" data-testid={`badge-credit-${app.id}`}>Credit: {app.credit}</Badge>
+                        <Badge variant="outline" className="text-[10px] sm:text-xs" data-testid={`badge-employment-${app.id}`}>Employment: {app.employment}</Badge>
+                        <Badge variant="outline" className="text-[10px] sm:text-xs" data-testid={`badge-eviction-${app.id}`}>Eviction: {app.eviction}</Badge>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <Badge className={statusConfig[app.status as keyof typeof statusConfig].color} data-testid={`status-${app.id}`}>
-                        {statusConfig[app.status as keyof typeof statusConfig].label}
-                      </Badge>
-                      <p className="text-xs text-muted-foreground mt-2">{app.date}</p>
-                      <Button variant="ghost" size="sm" className="mt-3" data-testid={`button-view-app-${app.id}`}><Eye className="w-4 h-4 mr-1" /> Review</Button>
+                    <div className="flex items-center justify-between sm:block sm:text-right">
+                      <div className="sm:mb-2">
+                        <Badge className={`${statusConfig[app.status as keyof typeof statusConfig].color} text-[10px] sm:text-xs`} data-testid={`status-${app.id}`}>
+                          {statusConfig[app.status as keyof typeof statusConfig].label}
+                        </Badge>
+                        <p className="text-[10px] sm:text-xs text-muted-foreground mt-1 hidden sm:block">{app.date}</p>
+                      </div>
+                      <Button variant="ghost" size="sm" className="h-8 text-xs" data-testid={`button-view-app-${app.id}`}><Eye className="w-3 h-3 mr-1" /> Review</Button>
                     </div>
                   </div>
                 </CardContent>
@@ -67,49 +71,51 @@ export default function LandlordApplications() {
             ))}
           </TabsContent>
 
-          <TabsContent value="pending" className="space-y-4">
+          <TabsContent value="pending" className="space-y-3 sm:space-y-4 mt-4">
             {applications.filter(a => a.status === "pending").map((app) => (
               <Card key={app.id} className="hover:shadow-md transition-shadow">
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
+                <CardContent className="pt-4 sm:pt-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex-1">
-                      <h3 className="font-bold text-lg">{app.name}</h3>
-                      <p className="text-sm text-muted-foreground">{app.property}</p>
+                      <h3 className="font-bold text-base sm:text-lg">{app.name}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground">{app.property}</p>
                     </div>
-                    <Button size="sm" data-testid={`button-approve-${app.id}`}><CheckCircle2 className="w-4 h-4 mr-1" /> Approve</Button>
-                    <Button variant="destructive" size="sm" data-testid={`button-reject-${app.id}`}><XCircle className="w-4 h-4 mr-1" /> Reject</Button>
+                    <div className="flex gap-2">
+                      <Button size="sm" className="flex-1 sm:flex-none text-xs" data-testid={`button-approve-${app.id}`}><CheckCircle2 className="w-3 h-3 mr-1" /> Approve</Button>
+                      <Button variant="destructive" size="sm" className="flex-1 sm:flex-none text-xs" data-testid={`button-reject-${app.id}`}><XCircle className="w-3 h-3 mr-1" /> Reject</Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </TabsContent>
 
-          <TabsContent value="approved" className="space-y-4">
+          <TabsContent value="approved" className="space-y-3 sm:space-y-4 mt-4">
             {applications.filter(a => a.status === "approved").map((app) => (
               <Card key={app.id}>
-                <CardContent className="pt-6">
+                <CardContent className="pt-4 sm:pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-bold">{app.name}</h3>
-                      <p className="text-sm text-muted-foreground">{app.property}</p>
+                      <h3 className="font-bold text-sm sm:text-base">{app.name}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground">{app.property}</p>
                     </div>
-                    <Badge className="bg-green-500">Approved</Badge>
+                    <Badge className="bg-green-500 text-xs">Approved</Badge>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </TabsContent>
 
-          <TabsContent value="rejected" className="space-y-4">
+          <TabsContent value="rejected" className="space-y-3 sm:space-y-4 mt-4">
             {applications.filter(a => a.status === "rejected").map((app) => (
               <Card key={app.id}>
-                <CardContent className="pt-6">
+                <CardContent className="pt-4 sm:pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-bold">{app.name}</h3>
-                      <p className="text-sm text-muted-foreground">{app.property}</p>
+                      <h3 className="font-bold text-sm sm:text-base">{app.name}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground">{app.property}</p>
                     </div>
-                    <Badge className="bg-red-500">Rejected</Badge>
+                    <Badge className="bg-red-500 text-xs">Rejected</Badge>
                   </div>
                 </CardContent>
               </Card>

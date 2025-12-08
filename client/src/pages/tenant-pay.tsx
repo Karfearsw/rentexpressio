@@ -75,7 +75,7 @@ export default function TenantPay() {
                 <Label htmlFor="cardNumber">Card Number</Label>
                 <Input id="cardNumber" placeholder="4111 1111 1111 1111" data-testid="input-card-number" />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="expiry">Expiry</Label>
                   <Input id="expiry" placeholder="MM/YY" data-testid="input-card-expiry" />
@@ -101,7 +101,7 @@ export default function TenantPay() {
                 <Label htmlFor="bankName">Bank Name</Label>
                 <Input id="bankName" placeholder="Your Bank" data-testid="input-bank-name" />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="routing">Routing Number</Label>
                   <Input id="routing" placeholder="123456789" data-testid="input-routing-number" />

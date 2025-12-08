@@ -78,7 +78,7 @@ export default function LandlordProperties() {
                   </div>
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-muted-foreground">{prop.units} unit{prop.units !== 1 ? 's' : ''}</span>
-                    <Badge className={prop.occupancy === "100%" ? "bg-green-500" : "bg-blue-500"} className="text-xs">{prop.occupancy}</Badge>
+                    <Badge className={`text-xs ${prop.occupancy === "100%" ? "bg-green-500" : "bg-blue-500"}`}>{prop.occupancy}</Badge>
                   </div>
                   <div className="flex items-center justify-between text-xs font-bold">
                     <span className="text-green-600">${prop.rent.toLocaleString()}/mo</span>
@@ -116,7 +116,7 @@ export default function LandlordProperties() {
                     <TableCell className="text-center"><Badge variant="secondary" className="text-xs">{prop.units}</Badge></TableCell>
                     <TableCell className="text-center font-bold text-green-600 text-xs sm:text-sm">${prop.rent.toLocaleString()}</TableCell>
                     <TableCell className="text-center">
-                      <Badge className={prop.occupancy === "100%" ? "bg-green-500" : "bg-blue-500"} className="text-xs">{prop.occupancy}</Badge>
+                      <Badge className={`text-xs ${prop.occupancy === "100%" ? "bg-green-500" : "bg-blue-500"}`}>{prop.occupancy}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-1">

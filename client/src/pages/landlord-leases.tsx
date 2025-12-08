@@ -26,30 +26,30 @@ export default function LandlordLeases() {
 
   return (
     <DashboardLayout type="landlord">
-      <div className="flex flex-col gap-6">
-        <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:gap-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-heading font-bold">Leases</h1>
-            <p className="text-muted-foreground">Create, manage, and track tenant leases</p>
+            <h1 className="text-2xl sm:text-3xl font-heading font-bold">Leases</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground">Create, manage, and track tenant leases</p>
           </div>
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button size="lg"><Plus className="w-4 h-4 mr-2" /> Create Lease</Button>
+              <Button size="sm" className="w-full sm:w-auto text-xs sm:text-sm"><Plus className="w-3 sm:w-4 h-3 sm:h-4 mr-1" /> Create Lease</Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-2xl w-full mx-2 sm:mx-0">
               <DialogHeader>
                 <DialogTitle>Create New Lease</DialogTitle>
               </DialogHeader>
-              <div className="space-y-4 py-4">
-                <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-4 py-4 max-h-[70vh] overflow-y-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="tenant">Tenant Name</Label>
-                    <Input id="tenant" placeholder="Full name" data-testid="input-lease-tenant" />
+                    <Label htmlFor="tenant" className="text-xs sm:text-sm">Tenant Name</Label>
+                    <Input id="tenant" placeholder="Full name" data-testid="input-lease-tenant" className="h-9 sm:h-10 text-xs sm:text-sm" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="property">Property</Label>
+                    <Label htmlFor="property" className="text-xs sm:text-sm">Property</Label>
                     <Select>
-                      <SelectTrigger data-testid="select-lease-property">
+                      <SelectTrigger data-testid="select-lease-property" className="h-9 sm:h-10 text-xs sm:text-sm">
                         <SelectValue placeholder="Select property" />
                       </SelectTrigger>
                       <SelectContent>
@@ -60,20 +60,20 @@ export default function LandlordLeases() {
                     </Select>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="startDate">Start Date</Label>
-                    <Input id="startDate" type="date" data-testid="input-lease-start-date" />
+                    <Label htmlFor="startDate" className="text-xs sm:text-sm">Start Date</Label>
+                    <Input id="startDate" type="date" data-testid="input-lease-start-date" className="h-9 sm:h-10 text-xs sm:text-sm" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="endDate">End Date</Label>
-                    <Input id="endDate" type="date" data-testid="input-lease-end-date" />
+                    <Label htmlFor="endDate" className="text-xs sm:text-sm">End Date</Label>
+                    <Input id="endDate" type="date" data-testid="input-lease-end-date" className="h-9 sm:h-10 text-xs sm:text-sm" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="template">Lease Template</Label>
+                  <Label htmlFor="template" className="text-xs sm:text-sm">Lease Template</Label>
                   <Select>
-                    <SelectTrigger data-testid="select-lease-template">
+                    <SelectTrigger data-testid="select-lease-template" className="h-9 sm:h-10 text-xs sm:text-sm">
                       <SelectValue placeholder="Select template" />
                     </SelectTrigger>
                     <SelectContent>
@@ -85,37 +85,39 @@ export default function LandlordLeases() {
                     </SelectContent>
                   </Select>
                 </div>
-                <Button className="w-full" data-testid="button-create-lease">Create & Send to Sign</Button>
+                <Button className="w-full text-xs sm:text-sm" data-testid="button-create-lease">Create & Send to Sign</Button>
               </div>
             </DialogContent>
           </Dialog>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {leases.map((lease) => (
             <Card key={lease.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="pt-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <FileText className="w-5 h-5 text-primary" />
-                      <h3 className="font-bold text-lg" data-testid={`text-lease-tenant-${lease.id}`}>{lease.tenant}</h3>
-                      <Badge variant={lease.status === "active" ? "default" : "secondary"} data-testid={`status-lease-${lease.id}`}>
+              <CardContent className="pt-4 sm:pt-6">
+                <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+                  <div className="flex-1 w-full">
+                    <div className="flex items-center justify-between sm:justify-start gap-3 mb-2">
+                      <div className="flex items-center gap-3">
+                        <FileText className="w-4 sm:w-5 h-4 sm:h-5 text-primary" />
+                        <h3 className="font-bold text-base sm:text-lg" data-testid={`text-lease-tenant-${lease.id}`}>{lease.tenant}</h3>
+                      </div>
+                      <Badge variant={lease.status === "active" ? "default" : "secondary"} data-testid={`status-lease-${lease.id}`} className="text-[10px] sm:text-xs">
                         {lease.status === "active" ? "Active" : "Expired"}
                       </Badge>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-3">{lease.property}</p>
-                    <div className="flex flex-wrap gap-4 text-sm">
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-3">{lease.property}</p>
+                    <div className="flex flex-wrap gap-4 text-xs sm:text-sm">
                       <div className="flex items-center gap-1 text-muted-foreground">
-                        <Calendar className="w-4 h-4" />
+                        <Calendar className="w-3 sm:w-4 h-3 sm:h-4" />
                         <span data-testid={`text-lease-dates-${lease.id}`}>{lease.startDate} to {lease.endDate}</span>
                       </div>
                     </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" data-testid={`button-download-lease-${lease.id}`}><Download className="w-4 h-4 mr-1" /> Download</Button>
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <Button variant="outline" size="sm" className="flex-1 sm:flex-none text-xs" data-testid={`button-download-lease-${lease.id}`}><Download className="w-3 h-3 mr-1" /> Download</Button>
                     {lease.status === "active" && (
-                      <Button size="sm" data-testid={`button-send-renewal-${lease.id}`}><Send className="w-4 h-4 mr-1" /> Renew</Button>
+                      <Button size="sm" className="flex-1 sm:flex-none text-xs" data-testid={`button-send-renewal-${lease.id}`}><Send className="w-3 h-3 mr-1" /> Renew</Button>
                     )}
                   </div>
                 </div>
