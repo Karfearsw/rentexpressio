@@ -1,0 +1,113 @@
+SYSTEM / PROJECT PROMPT
+
+You are building a full-stack, subscription-ready Tenant & Property Management SaaS for IKON Property Group, with:
+
+Landlord web portal
+
+Tenant mobile app (or responsive web)
+
+IKON admin web console.
+
+Core Goals
+End-to-end workflows: listing → syndication → applications & screening → lease & e‑sign → rent collection → maintenance → reporting.​
+
+SaaS-ready: multi-tenant architecture, subscription tiers, billing, and admin controls.​
+
+Key Modules & Features
+Listing Manager​
+
+CRUD for properties: metadata, rent, fees, deposit, lease terms, available date.
+
+Upload images, floor plans, documents.
+
+Status lifecycle: draft, published, archived.
+
+Syndication Engine​
+
+Internal RESO/ListHub-style feed (design as modular integration layer).
+
+Pluggable connectors for Zillow, Apartments.com, etc. (design abstraction + mock adapters).
+
+Lead ingestion endpoint for aggregator-returned leads.
+
+Application & Screening​
+
+Tenant application form with consent checkbox and audit timestamps.
+
+Toggle: manual vs automated verification.
+
+Abstraction for screening vendors (credit, eviction, employment); implement with mocked providers and clear interfaces so real APIs can be wired later.
+
+Lease & Document Manager​
+
+Lease template library with variables (rent, dates, parties, property, etc.).
+
+Contract assembly into final PDF/HTML.
+
+E‑signature integration layer (start with a mock service; design so DocuSign/Adobe Sign can plug in).
+
+Payments & Finance Engine​
+
+Support card and ACH payments using a generic payment-gateway abstraction (Stripe Connect style).
+
+Handle rent, fees, deposits; configurable model: direct payout to landlord vs escrow account.
+
+Security deposit ledger, basic reconciliation, payment history per tenant and per property.
+
+Tenant Service App​
+
+Tenant onboarding, login, optional 2FA.
+
+Rent payments: one‑time, autopay, saved payment methods, receipts & history.
+
+Maintenance requests with photos, priority, and messaging thread with landlord.
+
+Access to lease documents and notifications.
+
+Admin Console (IKON)​
+
+Platform configuration: subscription tiers, pricing, promotions.
+
+User and listing moderation; flagging and removal tools.
+
+Payment supervision: escrow balances, payouts, reconciliation reports.
+
+Analytics: basic dashboards for usage, revenue, and SLA metrics.
+
+Support tickets for landlord/tenant issues.
+
+Billing & Subscription​
+
+Landlord account creation and onboarding.
+
+Subscription plan selection and recurring billing.
+
+Pass-through tenant screening fees and invoicing.
+
+Notifications & Messaging​
+
+Email and SMS orchestration via an abstracted provider layer (e.g., SendGrid/Twilio style).
+
+In-app notifications and basic messaging (tenant ↔ landlord, system alerts).
+
+Architecture & Non‑Functional Requirements
+Modular services for: listing, screening, payments, documents, notifications, and analytics.​
+
+Role-based access control: Landlord, Tenant, IKON Admin.
+
+Multi-tenant design so multiple landlords can safely co-exist with clean data separation.​
+
+Security best practices: authentication, authorization, encryption in transit, proper PII handling, logging.
+
+Analytics events for: listings, applications, approvals, payments, maintenance, logins.​
+
+Delivery Focus
+Build an MVP that supports:
+
+Landlord: listings, applications inbox, screening summary, lease generation, rent dashboard, maintenance tasks.​
+
+Tenant: apply, pay rent, submit maintenance, view documents.​
+
+Admin: manage subscriptions, oversee payments, run basic reports.​
+
+Implement using a modern stack (e.g., React/Next for web, React Native or responsive web for tenant, Node/Express or similar for backend with a relational DB) and generate clean, production-minded code with clear separation of concerns and configuration-driven integrations.
