@@ -112,19 +112,7 @@ export async function registerRoutes(
     const payments = await storage.getPaymentsByTenant(req.user.id);
     const payment = payments.find((p) => p.id === req.params.id);
     if (!payment) return res.status(404).json({ message: "Payment not found" });
-    const html = `<!doctype html><html><head><meta charset="utf-8"><title>Rent Receipt</title></head><body>
-      <h1>Rent Receipt</h1>
-      <p><strong>Payment ID:</strong> ${payment.id}</p>
-      <p><strong>Amount:</strong> $${payment.amount}</p>
-      <p><strong>Status:</strong> ${payment.status}</p>
-      <p><strong>Paid Date:</strong> ${payment.paidDate || "N/A"}</p>
-      <p><strong>Lease ID:</strong> ${payment.leaseId}</p>
-    </body></html>`;
-    res.setHeader("Content-Type", "text/html; charset=utf-8");
-    res.status(201).json(payment);
-  });
 
-  app.get("/api/payments/:id/receipt", isAuthenticated, async (req, res) => {
     // Return a simple HTML receipt for MVP
     const id = req.params.id;
     // In real app, verify ownership
@@ -134,13 +122,13 @@ export async function registerRoutes(
         <body style="font-family: sans-serif; padding: 40px; max-width: 600px; margin: 0 auto; border: 1px solid #ccc;">
           <h1 style="color: #333;">Rent Receipt</h1>
           <p><strong>Payment ID:</strong> ${id}</p>
-          <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+          <p><strong>Date:</strong> ${new Date(payment.paidDate || Date.now()).toLocaleDateString()}</p>
           <hr/>
           <p>This confirms that we have received your rent payment.</p>
-          <p><strong>Amount Paid:</strong> $1,500.00</p>
-          <p><strong>Status:</strong> Paid</p>
+          <p><strong>Amount Paid:</strong> $${payment.amount}</p>
+          <p><strong>Status:</strong> ${payment.status}</p>
           <br/>
-          <p>Thank you,<br/>IKON Property Management</p>
+          <p>Thank you,<br/>RentExpress Management</p>
         </body>
       </html>
     `);
