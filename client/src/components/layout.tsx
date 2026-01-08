@@ -10,10 +10,14 @@ import {
   X,
   Home,
   ShieldCheck,
+  Bell,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Logo } from "@/components/ui/logo";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/hooks/use-auth";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -22,14 +26,11 @@ interface LayoutProps {
 export function PublicLayout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-background font-sans">
-      <header className="border-b sticky top-0 z-50 bg-white/80 backdrop-blur-md">
+      <header className="glass-header">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/">
-            <div className="flex items-center gap-2 cursor-pointer">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold font-heading">
-                IK
-              </div>
-              <span className="hidden sm:inline font-heading font-bold text-lg sm:text-xl tracking-tight text-primary">IKON</span>
+            <div className="flex items-center gap-2 cursor-pointer h-12 w-32">
+              <Logo showSubtext={false} className="w-full h-full" />
             </div>
           </Link>
           <nav className="hidden md:flex items-center gap-8">
@@ -38,50 +39,59 @@ export function PublicLayout({ children }: LayoutProps) {
             <Link href="/admin"><span className="text-sm font-medium hover:text-primary cursor-pointer transition-colors">Enterprise</span></Link>
           </nav>
           <div className="flex items-center gap-2 sm:gap-4">
-            <Button variant="ghost" className="hidden sm:flex text-xs sm:text-sm">Log in</Button>
-            <Button className="text-xs sm:text-sm px-3 sm:px-4 py-2 h-9 sm:h-10">Get Started</Button>
+            <Link href="/login">
+              <Button variant="ghost" className="hidden sm:flex text-xs sm:text-sm">Log in</Button>
+            </Link>
+            <Link href="/signup">
+              <Button className="text-xs sm:text-sm px-3 sm:px-4 py-2 h-9 sm:h-10">Get Started</Button>
+            </Link>
           </div>
         </div>
       </header>
       <main className="flex-1">
         {children}
       </main>
-      <footer className="bg-primary text-primary-foreground py-8 sm:py-12 border-t border-white/10">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8">
-            <div>
-              <div className="font-heading font-bold text-lg mb-4">IKON</div>
-              <p className="text-xs sm:text-sm text-gray-400">Next-generation property management.</p>
+      <footer className="bg-primary text-primary-foreground py-12 sm:py-16 border-t border-white/10 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 mb-12 max-w-6xl mx-auto">
+            <div className="flex flex-col space-y-4 col-span-2 md:col-span-1">
+              <div className="font-heading font-bold text-2xl tracking-tight">RentExpress</div>
+              <p className="text-sm text-primary-foreground/70 leading-relaxed max-w-xs">
+                The Expressway to collect rent.
+              </p>
             </div>
-            <div>
-              <h4 className="font-bold text-sm mb-4">Platform</h4>
-              <ul className="space-y-2 text-xs sm:text-sm text-gray-400">
-                <li>Landlords</li>
-                <li>Tenants</li>
-                <li>Pricing</li>
+            <div className="flex flex-col space-y-4">
+              <h4 className="font-bold text-base">Platform</h4>
+              <ul className="space-y-3 text-sm text-primary-foreground/70">
+                <li><Link href="/landlord"><span className="hover:text-white transition-colors cursor-pointer">Landlords</span></Link></li>
+                <li><Link href="/tenant"><span className="hover:text-white transition-colors cursor-pointer">Tenants</span></Link></li>
+                <li><Link href="/pricing"><span className="hover:text-white transition-colors cursor-pointer">Pricing</span></Link></li>
               </ul>
             </div>
-            <div>
-              <h4 className="font-bold text-sm mb-4">Company</h4>
-              <ul className="space-y-2 text-xs sm:text-sm text-gray-400">
-                <li>About</li>
-                <li>Careers</li>
-                <li>Contact</li>
+            <div className="flex flex-col space-y-4">
+              <h4 className="font-bold text-base">Company</h4>
+              <ul className="space-y-3 text-sm text-primary-foreground/70">
+                <li><Link href="/about"><span className="hover:text-white transition-colors cursor-pointer">About</span></Link></li>
+                <li><Link href="/careers"><span className="hover:text-white transition-colors cursor-pointer">Careers</span></Link></li>
+                <li><Link href="/contact"><span className="hover:text-white transition-colors cursor-pointer">Contact</span></Link></li>
               </ul>
             </div>
-            <div className="hidden lg:block">
-              <h4 className="font-bold text-sm mb-4">Legal</h4>
-              <ul className="space-y-2 text-xs sm:text-sm text-gray-400">
-                <li>Privacy</li>
-                <li>Terms</li>
+            <div className="flex flex-col space-y-4">
+              <h4 className="font-bold text-base">Legal</h4>
+              <ul className="space-y-3 text-sm text-primary-foreground/70">
+                <li><Link href="/privacy"><span className="hover:text-white transition-colors cursor-pointer">Privacy</span></Link></li>
+                <li><Link href="/terms"><span className="hover:text-white transition-colors cursor-pointer">Terms</span></Link></li>
               </ul>
             </div>
           </div>
-          <div className="pt-6 sm:pt-8 border-t border-white/10 text-center text-xs sm:text-sm text-gray-500">
-            © 2025 IKON Property Group. All rights reserved.
-          </div>
-        </div>
-      </footer>
+          <div className="pt-8 border-t border-white/10 text-center">
+             <p className="text-xs sm:text-sm text-primary-foreground/50">
+               © {new Date().getFullYear()} RentExpress. All rights reserved.
+             </p>
+           </div>
+         </div>
+       </footer>
     </div>
   );
 }
@@ -128,15 +138,10 @@ export function DashboardLayout({ children, type = "landlord" }: LayoutProps & {
     <div className="min-h-screen flex flex-col lg:flex-row bg-gray-50/50">
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex flex-col w-64 bg-sidebar border-r border-sidebar-border fixed h-full z-30 overflow-y-auto">
-        <div className="p-4 sm:p-6 border-b border-sidebar-border shrink-0">
+        <div className="p-4 sm:p-6 border-b border-sidebar-border shrink-0 flex justify-center">
           <Link href="/">
-            <div className="flex items-center gap-2 cursor-pointer">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold font-heading text-sm">
-                {type === "admin" ? "IA" : "IK"}
-              </div>
-              <span className="font-heading font-bold text-lg text-sidebar-foreground">
-                {type === "admin" ? "IKON" : "IKON"}
-              </span>
+            <div className="flex items-center gap-2 cursor-pointer h-16 w-40">
+              <Logo className="w-full h-full" />
             </div>
           </Link>
         </div>
@@ -166,11 +171,8 @@ export function DashboardLayout({ children, type = "landlord" }: LayoutProps & {
         {/* Mobile + Tablet Header */}
         <header className="lg:hidden h-16 border-b bg-white/80 backdrop-blur-sm px-4 sm:px-6 flex items-center justify-between sticky top-0 z-20">
           <Link href="/">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold font-heading text-sm">
-                {type === "admin" ? "IA" : "IK"}
-              </div>
-              <span className="hidden sm:inline font-heading font-bold text-lg text-primary">IKON</span>
+            <div className="flex items-center gap-2 h-10 w-24">
+              <Logo showSubtext={false} className="w-full h-full" />
             </div>
           </Link>
           
@@ -182,8 +184,10 @@ export function DashboardLayout({ children, type = "landlord" }: LayoutProps & {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-64 p-0">
-                <div className="p-6 border-b">
-                  <span className="font-heading font-bold text-xl">IKON</span>
+                <div className="p-6 border-b flex justify-center">
+                  <div className="h-12 w-32">
+                    <Logo className="w-full h-full" />
+                  </div>
                 </div>
                 <SidebarNav menuItems={menuItems} location={location} type={type} />
                 <div className="p-4 border-t mt-auto">
@@ -269,3 +273,92 @@ export function MobileLayout({ children }: LayoutProps) {
 
 // Icon import that was missing
 import { FileText } from "lucide-react";
+
+function TenantNavLinks() {
+  return (
+    <nav className="hidden md:flex items-center gap-6">
+      <Link href="/tenant"><span className="text-sm font-medium hover:text-primary cursor-pointer transition-colors">My Home</span></Link>
+      <Link href="/tenant/pay"><span className="text-sm font-medium hover:text-primary cursor-pointer transition-colors">Payments</span></Link>
+      <Link href="/tenant/maintenance"><span className="text-sm font-medium hover:text-primary cursor-pointer transition-colors">Maintenance</span></Link>
+      <Link href="/tenant/documents"><span className="text-sm font-medium hover:text-primary cursor-pointer transition-colors">Documents</span></Link>
+    </nav>
+  );
+}
+
+export function TenantLayout({ children }: LayoutProps) {
+  const { user, logoutMutation } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  return (
+    <div className="min-h-screen flex flex-col bg-background">
+      <header className="border-b sticky top-0 z-50 bg-white/80 backdrop-blur-md">
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+          <Link href="/tenant">
+            <div className="flex items-center gap-2 cursor-pointer h-12 w-32">
+              <Logo showSubtext={false} className="w-full h-full" />
+            </div>
+          </Link>
+          <TenantNavLinks />
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" className="hidden sm:inline-flex">
+              <Bell className="w-5 h-5" />
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="flex items-center gap-2">
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>{user?.username?.slice(0, 2)?.toUpperCase() || "ME"}</AvatarFallback>
+                  </Avatar>
+                  <span className="hidden sm:inline text-sm font-medium">{user?.username || "Profile"}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/tenant/profile"><span>My Profile</span></Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/tenant"><span>Settings</span></Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => logoutMutation.mutate()}>Sign Out</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Menu className="w-5 h-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-64 p-0">
+                <div className="p-6 border-b flex justify-center">
+                  <div className="h-12 w-32">
+                    <Logo className="w-full h-full" />
+                  </div>
+                </div>
+                <div className="flex-1 py-6 px-4 space-y-2">
+                  <Link href="/tenant"><div className="px-3 py-2 rounded-md hover:bg-accent cursor-pointer">My Home</div></Link>
+                  <Link href="/tenant/pay"><div className="px-3 py-2 rounded-md hover:bg-accent cursor-pointer">Payments</div></Link>
+                  <Link href="/tenant/maintenance"><div className="px-3 py-2 rounded-md hover:bg-accent cursor-pointer">Maintenance</div></Link>
+                  <Link href="/tenant/documents"><div className="px-3 py-2 rounded-md hover:bg-accent cursor-pointer">Documents</div></Link>
+                </div>
+                <div className="p-4 border-t mt-auto">
+                  <Button variant="ghost" className="w-full justify-start text-destructive" size="sm" onClick={() => logoutMutation.mutate()}>Sign Out</Button>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+      </header>
+      <main className="flex-1">
+        <div className="container mx-auto px-4 py-6">
+          <div className="max-w-7xl mx-auto">
+            {children}
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}

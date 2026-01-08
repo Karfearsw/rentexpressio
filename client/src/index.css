@@ -55,11 +55,11 @@
   --font-sans: 'Inter', sans-serif;
   --font-heading: 'Plus Jakarta Sans', sans-serif;
   
-  --radius: 0.5rem;
+  --radius: 0.75rem;
 }
 
 :root {
-  /* Corporate Blue Theme */
+  /* Corporate Blue Theme - Harmonized */
   --background: 210 40% 98%;
   --foreground: 222 47% 11%;
 
@@ -69,12 +69,12 @@
   --popover: 0 0% 100%;
   --popover-foreground: 222 47% 11%;
 
-  /* Dark Navy Primary */
+  /* Deep Navy Primary - Trust & Stability */
   --primary: 222 47% 11%;
   --primary-foreground: 210 40% 98%;
 
-  /* Soft Blue Secondary */
-  --secondary: 210 96% 89%;
+  /* Soft Blue Secondary - Approachable */
+  --secondary: 210 96% 96%;
   --secondary-foreground: 222 47% 11%;
 
   --muted: 210 40% 96.1%;
@@ -90,7 +90,7 @@
   --input: 214.3 31.8% 91.4%;
   --ring: 222 47% 11%;
 
-  --radius: 0.5rem;
+  --radius: 0.75rem;
 
   --chart-1: 221.2 83.2% 53.3%; /* Vibrant Blue */
   --chart-2: 212 95% 68%;       /* Sky Blue */
@@ -106,6 +106,9 @@
   --sidebar-accent-foreground: 222 47% 11%;
   --sidebar-border: 220 13% 91%;
   --sidebar-ring: 217.2 91.2% 59.8%;
+
+  /* Gold accent (optional) */
+  --accent-gold: 46 65% 53%;
 }
 
 .dark {

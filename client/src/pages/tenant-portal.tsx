@@ -1,107 +1,147 @@
 import React from "react";
-import { MobileLayout } from "@/components/layout";
-import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "wouter";
+import { TenantLayout } from "@/components/layout";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
   Wrench, 
   FileText, 
-  Bell, 
-  ChevronRight,
   Clock,
-  CheckCircle2
+  CheckCircle2,
+  PhoneCall
 } from "lucide-react";
 
 export default function TenantPortal() {
   return (
-    <MobileLayout>
-      <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
+    <TenantLayout>
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-xl sm:text-2xl font-heading font-bold text-gray-900">Hi, Alex</h1>
-            <p className="text-xs sm:text-sm text-gray-500">Unit 4B • Sunset Apts</p>
-          </div>
-          <div className="w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-gray-200 overflow-hidden border-2 border-white shadow-sm">
-            <img src="https://github.com/shadcn.png" alt="Profile" className="w-full h-full object-cover" />
+            <h1 className="text-3xl font-heading font-bold">Welcome back, Alex</h1>
+            <p className="text-sm text-muted-foreground">Last login: Dec 8, 2025 9:30 AM</p>
           </div>
         </div>
 
-        {/* Rent Card */}
-        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-primary text-white shadow-lg sm:shadow-xl p-4 sm:p-6">
-          <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-white/10 rounded-full -mr-8 sm:-mr-10 -mt-8 sm:-mt-10 blur-2xl"></div>
-          
-          <div className="relative z-10">
-            <p className="text-blue-100 text-xs sm:text-sm font-medium mb-1">Rent Due</p>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4">$2,450<span className="text-sm sm:text-lg text-blue-200 font-normal">.00</span></h2>
-            
-            <div className="flex items-center justify-between mb-4 sm:mb-6">
-              <div className="flex items-center gap-2 text-xs sm:text-sm text-blue-100 bg-white/10 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full">
-                <Clock className="w-3 sm:w-4 h-3 sm:h-4" /> Due in 3 days
-              </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>My Lease</CardTitle>
+            <CardDescription>Sunset Boulevard Apartments • Unit 4B</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="text-sm text-muted-foreground">123 Main Street, Orlando, FL 32801</div>
+            <div className="text-sm">Lease Period: Jan 15, 2024 - Jan 14, 2025</div>
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="outline">Landlord: ABC Property Management</Badge>
+              <Badge variant="secondary" className="flex items-center gap-1"><PhoneCall className="w-3 h-3" /> (555) 123-4567</Badge>
             </div>
+            <div className="flex gap-2">
+              <Link href="/tenant/documents">
+                <Button variant="outline">View Lease Document</Button>
+              </Link>
+              <Button onClick={() => window.location.href = "mailto:landlord@example.com"}>Contact Landlord</Button>
+            </div>
+          </CardContent>
+        </Card>
 
-            <Button className="w-full bg-white text-primary hover:bg-gray-100 font-bold rounded-xl h-10 sm:h-12 text-sm sm:text-base shadow-lg">
-              Pay Now
-            </Button>
-          </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Rent Payment</CardTitle>
+              <CardDescription>Next payment details</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="text-sm">Next Payment Due: January 15, 2025</div>
+              <div className="text-2xl font-bold">$1,500</div>
+              <div className="flex gap-2">
+                <Link href="/tenant/pay">
+                  <Button>Pay Now</Button>
+                </Link>
+                <Link href="/tenant/pay">
+                  <Button variant="outline">View History</Button>
+                </Link>
+              </div>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline">Autopay</Badge>
+                <span className="text-sm text-muted-foreground">Enabled</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Maintenance</CardTitle>
+              <CardDescription>Open requests</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-medium">AC not cooling</div>
+                  <div className="text-sm text-muted-foreground">Status: In Progress • Assigned: Joe (HVAC Tech)</div>
+                </div>
+                <Badge>In Progress</Badge>
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-medium">Kitchen light out</div>
+                  <div className="text-sm text-muted-foreground">Status: Scheduled</div>
+                </div>
+                <Badge variant="secondary">Scheduled</Badge>
+              </div>
+              <div className="pt-2">
+                <Link href="/tenant/maintenance">
+                  <Button variant="outline">Submit New Request</Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-2 gap-3 sm:gap-4">
-          <button className="flex flex-col items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 active:scale-95 transition-transform">
-            <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
-              <Wrench className="w-5 sm:w-6 h-5 sm:h-6" />
+        <Card>
+          <CardHeader>
+            <CardTitle>Documents</CardTitle>
+            <CardDescription>Your files</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2"><FileText className="w-4 h-4" /> Lease Agreement.pdf</div>
+              <Button variant="outline">Download</Button>
             </div>
-            <span className="font-medium text-xs sm:text-sm text-gray-700">Request Fix</span>
-          </button>
-          <button className="flex flex-col items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 active:scale-95 transition-transform">
-            <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-              <FileText className="w-5 sm:w-6 h-5 sm:h-6" />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2"><FileText className="w-4 h-4" /> Move-in Checklist.pdf</div>
+              <Button variant="outline">Download</Button>
             </div>
-            <span className="font-medium text-xs sm:text-sm text-gray-700">Documents</span>
-          </button>
-        </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2"><FileText className="w-4 h-4" /> Rent Receipt - December 2024.pdf</div>
+              <Button variant="outline">Download</Button>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2"><FileText className="w-4 h-4" /> Community Rules.pdf</div>
+              <Button variant="outline">Download</Button>
+            </div>
+          </CardContent>
+        </Card>
 
-        {/* Recent Activity */}
-        <div>
-          <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <h3 className="font-bold text-sm sm:text-base text-gray-900">Recent Activity</h3>
-            <span className="text-xs text-primary font-medium">View All</span>
-          </div>
-          <div className="space-y-2 sm:space-y-3">
-            <div className="bg-white p-3 sm:p-4 rounded-lg sm:rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3">
-              <div className="w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 flex-shrink-0">
-                <CheckCircle2 className="w-4 sm:w-5 h-4 sm:h-5" />
-              </div>
-              <div className="flex-1">
-                <p className="font-medium text-xs sm:text-sm text-gray-900">Rent Payment</p>
-                <p className="text-[10px] sm:text-xs text-gray-500">Nov 01 • Auto-pay</p>
-              </div>
-              <span className="text-xs sm:text-sm font-bold text-gray-900">-$2,450</span>
+        <Card>
+          <CardHeader>
+            <CardTitle>Notifications</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="flex items-center justify-between">
+              <div>Rent reminder: Payment due in 7 days</div>
+              <Badge variant="outline">Reminder</Badge>
             </div>
-            <div className="bg-white p-3 sm:p-4 rounded-lg sm:rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3">
-              <div className="w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 flex-shrink-0">
-                <Wrench className="w-4 sm:w-5 h-4 sm:h-5" />
-              </div>
-              <div className="flex-1">
-                <p className="font-medium text-xs sm:text-sm text-gray-900">Maintenance Request</p>
-                <p className="text-[10px] sm:text-xs text-gray-500">Oct 28 • HVAC Filter</p>
-              </div>
-              <Badge variant="secondary" className="text-[10px] sm:text-xs">Closed</Badge>
+            <div className="flex items-center justify-between">
+              <div>Maintenance update: HVAC tech scheduled for tomorrow</div>
+              <Badge variant="outline">Update</Badge>
             </div>
-          </div>
-        </div>
-
-        {/* Notifications */}
-        <div className="bg-blue-50 p-4 sm:p-5 rounded-lg sm:rounded-xl flex items-start gap-3 border border-blue-200">
-          <Bell className="w-4 sm:w-5 h-4 sm:h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-          <div>
-            <p className="text-xs sm:text-sm font-medium text-blue-900">Building Notice</p>
-            <p className="text-[10px] sm:text-xs text-blue-700 mt-1">Water will be shut off for maintenance on Tuesday from 10am-2pm.</p>
-          </div>
-        </div>
+            <div className="flex items-center justify-between">
+              <div>Lease renewal notice: Renew before Nov 15</div>
+              <Badge variant="outline">Action</Badge>
+            </div>
+          </CardContent>
+        </Card>
       </div>
-    </MobileLayout>
+    </TenantLayout>
   );
 }
