@@ -11,6 +11,9 @@ import {
   Home,
   ShieldCheck,
   Bell,
+  FileText,
+  Receipt,
+  Megaphone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -126,6 +129,8 @@ export function DashboardLayout({ children, type = "landlord" }: LayoutProps & {
     { icon: Users, label: "Tenants", href: "/landlord/tenants" },
     { icon: Users, label: "Applications", href: "/landlord/applications" },
     { icon: FileText, label: "Leases", href: "/landlord/leases" },
+    { icon: Receipt, label: "Charges", href: "/landlord/charges" },
+    { icon: Megaphone, label: "Syndication", href: "/landlord/syndication" },
     { icon: Settings, label: "Settings", href: "/landlord/settings" },
   ] : [
     { icon: LayoutDashboard, label: "Overview", href: "/admin" },
@@ -271,8 +276,6 @@ export function MobileLayout({ children }: LayoutProps) {
   );
 }
 
-// Icon import that was missing
-import { FileText } from "lucide-react";
 
 function TenantNavLinks() {
   return (

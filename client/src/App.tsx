@@ -24,6 +24,8 @@ import LandlordApplications from "@/pages/landlord-applications";
 import LandlordLeases from "@/pages/landlord-leases";
 import LandlordTenants from "@/pages/landlord-tenants";
 import LandlordSettings from "@/pages/landlord-settings";
+import LandlordCharges from "@/pages/landlord-charges";
+import LandlordSyndication from "@/pages/landlord-syndication";
 
 // Tenant Pages
 import TenantPortal from "@/pages/tenant-portal";
@@ -63,6 +65,8 @@ function Router() {
       <ProtectedRoute path="/landlord/applications" component={LandlordApplications} />
       <ProtectedRoute path="/landlord/leases" component={LandlordLeases} />
       <ProtectedRoute path="/landlord/tenants" component={LandlordTenants} />
+      <ProtectedRoute path="/landlord/charges" component={LandlordCharges} />
+      <ProtectedRoute path="/landlord/syndication" component={LandlordSyndication} />
       <ProtectedRoute path="/landlord/settings" component={LandlordSettings} />
       
       {/* Tenant Routes */}

@@ -4,8 +4,97 @@ import cookieParser from "cookie-parser";
 import { Pool } from "pg";
 import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
+import { Resend } from "resend";
 
 const scryptAsync = promisify(scrypt);
+
+async function sendChargeEmail(
+  type: "invoice" | "reminder" | "receipt",
+  toEmail: string,
+  tenantName: string,
+  amount: string,
+  dueDate: string,
+  description: string
+): Promise<{ success: boolean; error?: string }> {
+  const resendApiKey = process.env.RESEND_API_KEY;
+  const fromEmail = process.env.RESEND_FROM_EMAIL || "noreply@rentexpress.io";
+  
+  if (!resendApiKey) {
+    console.log(`[Email] Skipping ${type} email - RESEND_API_KEY not configured`);
+    return { success: true };
+  }
+
+  const resend = new Resend(resendApiKey);
+  
+  const templates: Record<string, { subject: string; html: string }> = {
+    invoice: {
+      subject: `Invoice: ${description}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #1a1a1a;">Invoice from RentExpress</h1>
+          <p>Hello ${tenantName},</p>
+          <p>You have a new charge on your account:</p>
+          <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <p style="margin: 0;"><strong>Description:</strong> ${description}</p>
+            <p style="margin: 10px 0 0;"><strong>Amount:</strong> $${amount}</p>
+            <p style="margin: 10px 0 0;"><strong>Due Date:</strong> ${dueDate}</p>
+          </div>
+          <p>Please log in to your tenant portal to make a payment.</p>
+          <p style="color: #666; font-size: 12px; margin-top: 30px;">This is an automated email from RentExpress.</p>
+        </div>
+      `
+    },
+    reminder: {
+      subject: `Payment Reminder: ${description}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #e65100;">Payment Reminder</h1>
+          <p>Hello ${tenantName},</p>
+          <p>This is a friendly reminder that the following charge is due soon:</p>
+          <div style="background: #fff3e0; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #e65100;">
+            <p style="margin: 0;"><strong>Description:</strong> ${description}</p>
+            <p style="margin: 10px 0 0;"><strong>Amount:</strong> $${amount}</p>
+            <p style="margin: 10px 0 0;"><strong>Due Date:</strong> ${dueDate}</p>
+          </div>
+          <p>Please log in to your tenant portal to make a payment before the due date.</p>
+          <p style="color: #666; font-size: 12px; margin-top: 30px;">This is an automated email from RentExpress.</p>
+        </div>
+      `
+    },
+    receipt: {
+      subject: `Payment Receipt: ${description}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #2e7d32;">Payment Received</h1>
+          <p>Hello ${tenantName},</p>
+          <p>Thank you for your payment! Here is your receipt:</p>
+          <div style="background: #e8f5e9; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #2e7d32;">
+            <p style="margin: 0;"><strong>Description:</strong> ${description}</p>
+            <p style="margin: 10px 0 0;"><strong>Amount Paid:</strong> $${amount}</p>
+            <p style="margin: 10px 0 0;"><strong>Date:</strong> ${dueDate}</p>
+          </div>
+          <p>This payment has been applied to your account.</p>
+          <p style="color: #666; font-size: 12px; margin-top: 30px;">This is an automated email from RentExpress.</p>
+        </div>
+      `
+    }
+  };
+
+  try {
+    const template = templates[type];
+    await resend.emails.send({
+      from: fromEmail,
+      to: toEmail,
+      subject: template.subject,
+      html: template.html
+    });
+    console.log(`[Email] Successfully sent ${type} to ${toEmail}`);
+    return { success: true };
+  } catch (error: any) {
+    console.error(`[Email] Failed to send ${type}:`, error);
+    return { success: false, error: error.message };
+  }
+}
 
 const app = express();
 
@@ -664,6 +753,64 @@ app.delete("/api/charges/:id", authenticateToken, async (req: Request, res: Resp
   } catch (error) {
     console.error("Delete charge error:", error);
     res.status(500).json({ message: "Failed to delete charge" });
+  }
+});
+
+app.post("/api/charges/:id/send-notification", authenticateToken, async (req: Request, res: Response) => {
+  if (req.apiUser?.userType !== "landlord") {
+    return res.status(403).json({ message: "Landlord access only" });
+  }
+  
+  try {
+    const { type } = req.body;
+    if (!["invoice", "reminder", "receipt"].includes(type)) {
+      return res.status(400).json({ message: "Invalid notification type" });
+    }
+    
+    const chargeResult = await pool.query(
+      `SELECT c.*, u.username as tenant_username, 
+              (u.profile_data->>'email') as tenant_email,
+              (u.profile_data->>'firstName') as tenant_first_name
+       FROM charges c
+       LEFT JOIN users u ON c.tenant_id = u.id
+       WHERE c.id = $1 AND c.landlord_id = $2`,
+      [req.params.id, req.apiUser?.id]
+    );
+    
+    if (chargeResult.rows.length === 0) {
+      return res.status(404).json({ message: "Charge not found" });
+    }
+    
+    const charge = chargeResult.rows[0];
+    const tenantEmail = charge.tenant_email;
+    const tenantName = charge.tenant_first_name || charge.tenant_username || "Tenant";
+    const updateField = type === "invoice" ? "invoice_sent" : type === "reminder" ? "reminder_sent" : "receipt_sent";
+    
+    if (tenantEmail) {
+      const emailResult = await sendChargeEmail(
+        type as "invoice" | "reminder" | "receipt",
+        tenantEmail,
+        tenantName,
+        charge.amount,
+        charge.due_date,
+        charge.description
+      );
+      
+      if (!emailResult.success) {
+        return res.status(500).json({ message: `Failed to send email: ${emailResult.error}` });
+      }
+    }
+    
+    await pool.query(`UPDATE charges SET ${updateField} = 'true' WHERE id = $1`, [req.params.id]);
+    
+    const message = tenantEmail 
+      ? `${type} email sent to ${tenantEmail}` 
+      : `Notification marked as sent (no email configured for tenant)`;
+    
+    res.json({ message });
+  } catch (error) {
+    console.error("Send notification error:", error);
+    res.status(500).json({ message: "Failed to send notification" });
   }
 });
 
