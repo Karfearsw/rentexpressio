@@ -2,41 +2,33 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "dist/public",
+  "functions": {
+    "api/index.ts": {
+      "runtime": "@vercel/node@3"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.ts" },
+    { "source": "/((?!api|assets).*)", "destination": "/index.html" }
+  ],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/api/(.*)",
       "headers": [
-        { "key": "Content-Type", "value": "text/html; charset=utf-8" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" }
+        { "key": "Content-Type", "value": "application/json" }
       ]
     },
     {
-      "source": "/assets/(.*)",
+      "source": "/(.*).html",
       "headers": [
-        { "key": "Content-Type", "value": "application/javascript" },
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        { "key": "Content-Type", "value": "text/html; charset=utf-8" }
       ]
     },
     {
-      "source": "/(.*).css",
+      "source": "/",
       "headers": [
-        { "key": "Content-Type", "value": "text/css" }
-      ]
-    },
-    {
-      "source": "/(.*).js",
-      "headers": [
-        { "key": "Content-Type", "value": "application/javascript" }
-      ]
-    },
-    {
-      "source": "/(.*).png",
-      "headers": [
-        { "key": "Content-Type", "value": "image/png" }
+        { "key": "Content-Type", "value": "text/html; charset=utf-8" }
       ]
     }
-  ],
-  "rewrites": [
-    { "source": "/((?!assets|api).*)", "destination": "/index.html" }
   ]
 }
