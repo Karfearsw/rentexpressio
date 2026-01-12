@@ -33,7 +33,7 @@ export default function LandlordDashboard() {
   }
 
   // Calculations for ROI Dashboard
-  const totalRentExpected = leases?.reduce((sum, l) => sum + Number(l.rentAmount), 0) || 0;
+  const totalRentExpected = leases?.reduce((sum, l) => sum + Number(l.rent), 0) || 0;
   const totalCollected = payments?.filter(p => p.status === 'paid').reduce((sum, p) => sum + Number(p.amount), 0) || 0;
   const collectionRate = totalRentExpected > 0 ? Math.round((totalCollected / totalRentExpected) * 100) : 0;
   
@@ -145,7 +145,7 @@ export default function LandlordDashboard() {
                     <TableRow key={lease.id}>
                       <TableCell className="font-medium">Tenant #{lease.tenantId.substring(0, 8)}</TableCell>
                       <TableCell>{property?.name || "Unknown Property"}</TableCell>
-                      <TableCell>${lease.rentAmount}</TableCell>
+                      <TableCell>${lease.rent}</TableCell>
                       <TableCell>
                         {payment ? (
                           <Badge className={payment.status === 'paid' ? "bg-green-500" : "bg-red-500"}>
