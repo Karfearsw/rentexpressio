@@ -1,0 +1,82 @@
+Jan 12 17:26:52.49
+POST
+500
+www.rentexpress.io
+/api/auth/register
+Registration error: Error: getaddrinfo ENOTFOUND base at /var/task/node_modules/pg-pool/index.js:45:11 at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async <anonymous> (/vercel/path0/api/index.ts:97:26) { errno: -3008, code: 'ENOTFOUND', syscall: 'getaddrinfo', hostname: 'base' }
+Jan 12 17:26:52.31
+POST
+500
+www.rentexpress.io
+/api/auth/register
+Registration error: Error: getaddrinfo ENOTFOUND base at /var/task/node_modules/pg-pool/index.js:45:11 at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async <anonymous> (/vercel/path0/api/index.ts:97:26) { errno: -3008, code: 'ENOTFOUND', syscall: 'getaddrinfo', hostname: 'base' }
+Jan 12 17:26:52.09
+POST
+500
+www.rentexpress.io
+/api/auth/register
+Registration error: Error: getaddrinfo ENOTFOUND base at /var/task/node_modules/pg-pool/index.js:45:11 at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async <anonymous> (/vercel/path0/api/index.ts:97:26) { errno: -3008, code: 'ENOTFOUND', syscall: 'getaddrinfo', hostname: 'base' }
+Jan 12 17:26:34.84
+POST
+500
+www.rentexpress.io
+/api/auth/register
+Registration error: Error: getaddrinfo ENOTFOUND base at /var/task/node_modules/pg-pool/index.js:45:11 at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async <anonymous> (/vercel/path0/api/index.ts:97:26) { errno: -3008, code: 'ENOTFOUND', syscall: 'getaddrinfo', hostname: 'base' }
+Jan 12 17:26:34.58
+POST
+500
+www.rentexpress.io
+/api/auth/register
+Registration error: Error: getaddrinfo ENOTFOUND base at /var/task/node_modules/pg-pool/index.js:45:11 at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async <anonymous> (/vercel/path0/api/index.ts:97:26) { errno: -3008, code: 'ENOTFOUND', syscall: 'getaddrinfo', hostname: 'base' }
+Jan 12 17:26:34.27
+POST
+500
+www.rentexpress.io
+/api/auth/register
+Registration error: Error: getaddrinfo ENOTFOUND base at /var/task/node_modules/pg-pool/index.js:45:11 at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async <anonymous> (/vercel/path0/api/index.ts:97:26) { errno: -3008, code: 'ENOTFOUND', syscall: 'getaddrinfo', hostname: 'base' }
+Jan 12 17:26:33.94
+POST
+500
+www.rentexpress.io
+/api/auth/register
+Registration error: Error: getaddrinfo ENOTFOUND base at /var/task/node_modules/pg-pool/index.js:45:11 at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async <anonymous> (/vercel/path0/api/index.ts:97:26) { errno: -3008, code: 'ENOTFOUND', syscall: 'getaddrinfo', hostname: 'base' }
+Jan 12 17:26:33.50
+POST
+500
+www.rentexpress.io
+/api/auth/register
+Registration error: Error: getaddrinfo ENOTFOUND base at /var/task/node_modules/pg-pool/index.js:45:11 at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async <anonymous> (/vercel/path0/api/index.ts:97:26) { errno: -3008, code: 'ENOTFOUND', syscall: 'getaddrinfo', hostname: 'base' }
+Jan 12 17:26:32.37
+POST
+500
+www.rentexpress.io
+/api/auth/register
+Registration error: Error: getaddrinfo ENOTFOUND base at /var/task/node_modules/pg-pool/index.js:45:11 at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async <anonymous> (/vercel/path0/api/index.ts:97:26) { errno: -3008, code: 'ENOTFOUND', syscall: 'getaddrinfo', hostname: 'base' }
+Jan 12 17:26:25.54
+POST
+500
+www.rentexpress.io
+/api/auth/register
+Registration error: Error: getaddrinfo ENOTFOUND base at /var/task/node_modules/pg-pool/index.js:45:11 at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async <anonymous> (/vercel/path0/api/index.ts:97:26) { errno: -3008, code: 'ENOTFOUND', syscall: 'getaddrinfo', hostname: 'base' }
+Jan 12 17:25:53.81
+POST
+500
+www.rentexpress.io
+/api/auth/register
+Registration error: Error: getaddrinfo ENOTFOUND base at /var/task/node_modules/pg-pool/index.js:45:11 at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async <anonymous> (/vercel/path0/api/index.ts:97:26) { errno: -3008, code: 'ENOTFOUND', syscall: 'getaddrinfo', hostname: 'base' }
+Jan 12 17:22:55.67
+GET
+---
+www.rentexpress.io
+/api/auth/check-username
+Unhandled Rejection: Error: getaddrinfo ENOTFOUND base at /var/task/node_modules/pg-pool/index.js:45:11 at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async <anonymous> (/vercel/path0/api/index.ts:205:18)
+Jan 12 17:22:06.89
+GET
+401
+www.rentexpress.io
+/api/user
+Jan 12 17:22:06.40
+GET
+200
+www.rentexpress.io
+/

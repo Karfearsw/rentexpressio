@@ -1,0 +1,52 @@
+05:38:40.653 Running build in Washington, D.C., USA (East) – iad1
+05:38:40.654 Build machine configuration: 2 cores, 8 GB
+05:38:40.664 Cloning github.com/Karfearsw/rentexpressio (Branch: main, Commit: 5009f0f)
+05:38:40.666 Skipping build cache, deployment was triggered without cache.
+05:38:41.119 Cloning completed: 454.000ms
+05:38:41.516 Running "vercel build"
+05:38:41.942 Vercel CLI 50.1.6
+05:38:42.694 Installing dependencies...
+05:38:46.490 npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+05:38:46.609 npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+05:38:52.512 
+05:38:52.514 added 468 packages in 10s
+05:38:52.515 
+05:38:52.515 42 packages are looking for funding
+05:38:52.515   run `npm fund` for details
+05:38:52.668 
+05:38:52.668 > rest-express@1.0.0 build
+05:38:52.668 > tsx script/build.ts
+05:38:52.669 
+05:38:53.501 building client...
+05:38:53.736 [36mvite v7.1.12 [32mbuilding for production...[36m[39m
+05:38:53.986 transforming...
+05:38:58.881 [32m✓[39m 2761 modules transformed.
+05:38:59.478 rendering chunks...
+05:38:59.781 [meta-images] no Replit deployment domain found, skipping meta tag updates
+05:38:59.789 computing gzip size...
+05:38:59.819 [2m../dist/public/[22m[32mindex.html                                                                 [39m[1m[2m    1.51 kB[22m[1m[22m[2m │ gzip:   0.61 kB[22m
+05:38:59.820 [2m../dist/public/[22m[2massets/[22m[32mmodern_property_management_dashboard_abstract_concept-DxpFD9QJ.png  [39m[1m[2m1,120.76 kB[22m[1m[22m
+05:38:59.820 [2m../dist/public/[22m[2massets/[22m[35mindex-CaLwsJkE.css                                                  [39m[1m[2m  123.22 kB[22m[1m[22m[2m │ gzip:  19.82 kB[22m
+05:38:59.820 [2m../dist/public/[22m[2massets/[22m[36mvendor-BGC0Bdnu.js                                                  [39m[1m[2m   17.29 kB[22m[1m[22m[2m │ gzip:   6.58 kB[22m
+05:38:59.820 [2m../dist/public/[22m[2massets/[22m[36mquery-DezLVW3k.js                                                   [39m[1m[2m   33.28 kB[22m[1m[22m[2m │ gzip:   9.88 kB[22m
+05:38:59.821 [2m../dist/public/[22m[2massets/[22m[36mui-OLyEoeOL.js                                                      [39m[1m[2m   49.86 kB[22m[1m[22m[2m │ gzip:  14.13 kB[22m
+05:38:59.821 [2m../dist/public/[22m[2massets/[22m[36mindex-BW28a3GC.js                                                   [39m[1m[33m  789.89 kB[39m[22m[2m │ gzip: 214.78 kB[22m
+05:38:59.821 [33m
+05:38:59.821 (!) Some chunks are larger than 500 kB after minification. Consider:
+05:38:59.821 - Using dynamic import() to code-split the application
+05:38:59.822 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+05:38:59.822 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+05:38:59.822 [32m✓ built in 5.87s[39m
+05:38:59.822 building server...
+05:39:00.009 
+05:39:00.009   dist/index.cjs  1.1mb ⚠️
+05:39:00.010 
+05:39:00.010 ⚡ Done in 185ms
+05:39:00.411 Using TypeScript 5.6.3 (local user-provided)
+05:39:07.517 Build Completed in /vercel/output [25s]
+05:39:07.619 Deploying outputs...
+05:39:12.988 Deployment completed
+05:39:13.924 Creating build cache...
+05:39:32.865 Created build cache: 18.936s
+05:39:32.866 Uploading build cache [56.59 MB]
+05:39:33.694 Build cache uploaded: 831.623ms
