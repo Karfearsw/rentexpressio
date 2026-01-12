@@ -72,6 +72,34 @@ export const maintenanceRequests = pgTable("maintenance_requests", {
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
 });
 
+export const charges = pgTable("charges", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  leaseId: varchar("lease_id").notNull(),
+  tenantId: varchar("tenant_id").notNull(),
+  landlordId: varchar("landlord_id").notNull(),
+  description: text("description").notNull(),
+  amount: text("amount").notNull(),
+  chargeDate: text("charge_date").notNull(),
+  dueDate: text("due_date").notNull(),
+  status: text("status").notNull().default("scheduled"),
+  category: text("category"),
+  invoiceSent: text("invoice_sent").default("false"),
+  reminderSent: text("reminder_sent").default("false"),
+  receiptSent: text("receipt_sent").default("false"),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const propertySyndication = pgTable("property_syndication", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  propertyId: varchar("property_id").notNull(),
+  platform: text("platform").notNull(),
+  enabled: text("enabled").notNull().default("false"),
+  listingUrl: text("listing_url"),
+  lastSyncedAt: text("last_synced_at"),
+  status: text("status").default("pending"),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -85,6 +113,8 @@ export type Lease = typeof leases.$inferSelect;
 export type Document = typeof documents.$inferSelect;
 export type Payment = typeof payments.$inferSelect;
 export type MaintenanceRequest = typeof maintenanceRequests.$inferSelect;
+export type Charge = typeof charges.$inferSelect;
+export type PropertySyndication = typeof propertySyndication.$inferSelect;
 
 export const userTypeEnum = z.enum(["tenant", "landlord", "enterprise"]);
 
