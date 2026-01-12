@@ -101,9 +101,9 @@ export async function registerRoutes(
       leaseId: lease.id,
       tenantId: req.user.id,
       amount: req.body.amount,
-      dueDate: req.body.dueDate || new Date().toISOString(),
-      status: "paid", // Mocking immediate success
-      paidDate: new Date().toISOString(),
+      date: new Date().toISOString(),
+      status: "paid",
+      method: "card",
     });
     res.status(201).json(payment);
   });
@@ -123,7 +123,7 @@ export async function registerRoutes(
         <body style="font-family: sans-serif; padding: 40px; max-width: 600px; margin: 0 auto; border: 1px solid #ccc;">
           <h1 style="color: #333;">Rent Receipt</h1>
           <p><strong>Payment ID:</strong> ${id}</p>
-          <p><strong>Date:</strong> ${new Date(payment.paidDate || Date.now()).toLocaleDateString()}</p>
+          <p><strong>Date:</strong> ${new Date(payment.date || Date.now()).toLocaleDateString()}</p>
           <hr/>
           <p>This confirms that we have received your rent payment.</p>
           <p><strong>Amount Paid:</strong> $${payment.amount}</p>

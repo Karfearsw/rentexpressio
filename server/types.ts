@@ -1,8 +1,12 @@
-import { User } from "@shared/schema";
-
 declare global {
   namespace Express {
-    interface User extends import("@shared/schema").User {}
+    interface User {
+      id: string;
+      username: string;
+      password: string;
+      userType: string;
+      profileData?: unknown;
+    }
   }
 }
 

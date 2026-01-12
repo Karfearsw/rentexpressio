@@ -93,3 +93,31 @@ Preferred communication style: Simple, everyday language.
 - **Tenant Screening** - Credit/eviction/employment vendors (mock adapters in place)
 - **E-Signature** - DocuSign/Adobe Sign (abstraction layer ready)
 - **Listing Syndication** - Zillow, Apartments.com (RESO/ListHub-style feed design)
+
+## Vercel Deployment
+
+The project includes a Vercel-compatible serverless API setup for deployment outside Replit.
+
+### Key Files
+- `api/index.ts` - Express app exported as serverless function with JWT authentication
+- `vercel.json` - Configuration for routing API and static file requests
+
+### Environment Variables Required for Vercel
+- `DATABASE_URL` - PostgreSQL connection string
+- `SESSION_SECRET` or `JWT_SECRET` - Secret key for JWT token signing
+
+### Authentication
+- **Local Development**: Uses Passport.js with express-session
+- **Vercel Deployment**: Uses JWT tokens stored in httpOnly cookies (stateless, serverless-compatible)
+
+### Deployment Steps
+1. Push code to GitHub
+2. Connect repository to Vercel
+3. Add environment variables in Vercel dashboard
+4. Deploy
+
+## Recent Changes
+
+- **Jan 2026**: Added Vercel serverless deployment configuration with JWT authentication
+- Fixed Express.User type definitions for proper TypeScript inference
+- Updated payment schema usage to use `date` field consistently
