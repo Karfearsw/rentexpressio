@@ -24,16 +24,18 @@ const pool = new Pool({
   ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false,
 });
 
-interface JWTPayload {
-  userId: string;
+interface APIUser {
+  id: string;
   username: string;
   userType: string;
+  password?: string;
+  profileData?: unknown;
 }
 
 declare global {
   namespace Express {
     interface Request {
-      user?: JWTPayload;
+      apiUser?: APIUser;
     }
   }
 }
@@ -53,7 +55,7 @@ async function comparePasswords(supplied: string, stored: string): Promise<boole
 
 function generateToken(user: { id: string; username: string; userType: string }): string {
   return jwt.sign(
-    { userId: user.id, username: user.username, userType: user.userType },
+    { id: user.id, username: user.username, userType: user.userType },
     JWT_SECRET,
     { expiresIn: "7d" }
   );
@@ -67,8 +69,8 @@ function authenticateToken(req: Request, res: Response, next: NextFunction) {
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
-    req.user = decoded;
+    const decoded = jwt.verify(token, JWT_SECRET) as APIUser;
+    req.apiUser = decoded;
     next();
   } catch (err) {
     return res.status(401).json({ message: "Invalid token" });
@@ -80,8 +82,8 @@ function optionalAuth(req: Request, res: Response, next: NextFunction) {
   
   if (token) {
     try {
-      const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
-      req.user = decoded;
+      const decoded = jwt.verify(token, JWT_SECRET) as APIUser;
+      req.apiUser = decoded;
     } catch (err) {
     }
   }
@@ -171,7 +173,7 @@ app.post("/api/auth/logout", (_req: Request, res: Response) => {
 });
 
 app.get("/api/user", optionalAuth, async (req: Request, res: Response) => {
-  if (!req.user) {
+  if (!req.apiUser) {
     return res.status(401).json({ message: "Not authenticated" });
   }
   
@@ -179,7 +181,7 @@ app.get("/api/user", optionalAuth, async (req: Request, res: Response) => {
     const result = await pool.query(
       `SELECT id, username, user_type as "userType", profile_data as "profileData" 
        FROM users WHERE id = $1`,
-      [req.user.userId]
+      [req.apiUser?.id]
     );
     
     if (result.rows.length === 0) {
@@ -209,7 +211,7 @@ app.get("/api/auth/check-username", async (req: Request, res: Response) => {
 });
 
 app.get("/api/properties", authenticateToken, async (req: Request, res: Response) => {
-  if (req.user?.userType !== "landlord") {
+  if (req.apiUser?.userType !== "landlord") {
     return res.status(403).json({ message: "Landlord access only" });
   }
   
@@ -218,7 +220,7 @@ app.get("/api/properties", authenticateToken, async (req: Request, res: Response
       `SELECT id, landlord_id as "landlordId", name, address, city, state, zip, type,
               bedrooms, bathrooms, square_feet as "squareFeet", rent, status
        FROM properties WHERE landlord_id = $1`,
-      [req.user.userId]
+      [req.apiUser?.id]
     );
     res.json(result.rows);
   } catch (error) {
@@ -228,7 +230,7 @@ app.get("/api/properties", authenticateToken, async (req: Request, res: Response
 });
 
 app.post("/api/properties", authenticateToken, async (req: Request, res: Response) => {
-  if (req.user?.userType !== "landlord") {
+  if (req.apiUser?.userType !== "landlord") {
     return res.status(403).json({ message: "Landlord access only" });
   }
   
@@ -239,7 +241,7 @@ app.post("/api/properties", authenticateToken, async (req: Request, res: Respons
        VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
        RETURNING id, landlord_id as "landlordId", name, address, city, state, zip, type,
                  bedrooms, bathrooms, square_feet as "squareFeet", rent, status`,
-      [req.user.userId, name, address, city, state, zip, type, bedrooms, bathrooms, squareFeet, rent, status || "Vacant"]
+      [req.apiUser?.id, name, address, city, state, zip, type, bedrooms, bathrooms, squareFeet, rent, status || "Vacant"]
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {
@@ -250,10 +252,10 @@ app.post("/api/properties", authenticateToken, async (req: Request, res: Respons
 
 app.get("/api/leases", authenticateToken, async (req: Request, res: Response) => {
   try {
-    if (req.user?.userType === "landlord") {
+    if (req.apiUser?.userType === "landlord") {
       const properties = await pool.query(
         "SELECT id FROM properties WHERE landlord_id = $1",
-        [req.user.userId]
+        [req.apiUser?.id]
       );
       const propertyIds = properties.rows.map(p => p.id);
       
@@ -269,13 +271,13 @@ app.get("/api/leases", authenticateToken, async (req: Request, res: Response) =>
         [propertyIds]
       );
       return res.json(result.rows);
-    } else if (req.user?.userType === "tenant") {
+    } else if (req.apiUser?.userType === "tenant") {
       const result = await pool.query(
         `SELECT id, property_id as "propertyId", tenant_id as "tenantId", landlord_id as "landlordId",
                 start_date as "startDate", end_date as "endDate", rent, deposit, status,
                 autopay_enabled as "autopayEnabled"
          FROM leases WHERE tenant_id = $1`,
-        [req.user.userId]
+        [req.apiUser?.id]
       );
       return res.json(result.rows);
     }
@@ -287,7 +289,7 @@ app.get("/api/leases", authenticateToken, async (req: Request, res: Response) =>
 });
 
 app.patch("/api/leases/autopay", authenticateToken, async (req: Request, res: Response) => {
-  if (req.user?.userType !== "tenant") {
+  if (req.apiUser?.userType !== "tenant") {
     return res.status(403).json({ message: "Tenant access only" });
   }
   
@@ -298,7 +300,7 @@ app.patch("/api/leases/autopay", authenticateToken, async (req: Request, res: Re
        RETURNING id, property_id as "propertyId", tenant_id as "tenantId", landlord_id as "landlordId",
                  start_date as "startDate", end_date as "endDate", rent, deposit, status,
                  autopay_enabled as "autopayEnabled"`,
-      [enabled ? "true" : "false", req.user.userId]
+      [enabled ? "true" : "false", req.apiUser?.id]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ message: "No active lease found" });
@@ -312,10 +314,10 @@ app.patch("/api/leases/autopay", authenticateToken, async (req: Request, res: Re
 
 app.get("/api/payments", authenticateToken, async (req: Request, res: Response) => {
   try {
-    if (req.user?.userType === "landlord") {
+    if (req.apiUser?.userType === "landlord") {
       const properties = await pool.query(
         "SELECT id FROM properties WHERE landlord_id = $1",
-        [req.user.userId]
+        [req.apiUser?.id]
       );
       const propertyIds = properties.rows.map(p => p.id);
       
@@ -339,11 +341,11 @@ app.get("/api/payments", authenticateToken, async (req: Request, res: Response) 
         [leaseIds]
       );
       return res.json(result.rows);
-    } else if (req.user?.userType === "tenant") {
+    } else if (req.apiUser?.userType === "tenant") {
       const result = await pool.query(
         `SELECT id, lease_id as "leaseId", tenant_id as "tenantId", amount, date, status, method
          FROM payments WHERE tenant_id = $1`,
-        [req.user.userId]
+        [req.apiUser?.id]
       );
       return res.json(result.rows);
     }
@@ -355,14 +357,14 @@ app.get("/api/payments", authenticateToken, async (req: Request, res: Response) 
 });
 
 app.post("/api/payments", authenticateToken, async (req: Request, res: Response) => {
-  if (req.user?.userType !== "tenant") {
+  if (req.apiUser?.userType !== "tenant") {
     return res.status(403).json({ message: "Tenant access only" });
   }
   
   try {
     const leaseResult = await pool.query(
       "SELECT id FROM leases WHERE tenant_id = $1 AND status = 'active' LIMIT 1",
-      [req.user.userId]
+      [req.apiUser?.id]
     );
     
     if (leaseResult.rows.length === 0) {
@@ -376,7 +378,7 @@ app.post("/api/payments", authenticateToken, async (req: Request, res: Response)
       `INSERT INTO payments (id, lease_id, tenant_id, amount, date, status, method)
        VALUES (gen_random_uuid(), $1, $2, $3, $4, 'paid', 'card')
        RETURNING id, lease_id as "leaseId", tenant_id as "tenantId", amount, date, status, method`,
-      [leaseResult.rows[0].id, req.user.userId, amount, paidDate]
+      [leaseResult.rows[0].id, req.apiUser?.id, amount, paidDate]
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {
@@ -386,14 +388,14 @@ app.post("/api/payments", authenticateToken, async (req: Request, res: Response)
 });
 
 app.get("/api/payments/:id/receipt", authenticateToken, async (req: Request, res: Response) => {
-  if (req.user?.userType !== "tenant") {
+  if (req.apiUser?.userType !== "tenant") {
     return res.status(403).json({ message: "Tenant access only" });
   }
   
   try {
     const result = await pool.query(
       `SELECT id, amount, date, status FROM payments WHERE id = $1 AND tenant_id = $2`,
-      [req.params.id, req.user.userId]
+      [req.params.id, req.apiUser?.id]
     );
     
     if (result.rows.length === 0) {
@@ -426,10 +428,10 @@ app.get("/api/payments/:id/receipt", authenticateToken, async (req: Request, res
 
 app.get("/api/maintenance", authenticateToken, async (req: Request, res: Response) => {
   try {
-    if (req.user?.userType === "landlord") {
+    if (req.apiUser?.userType === "landlord") {
       const properties = await pool.query(
         "SELECT id FROM properties WHERE landlord_id = $1",
-        [req.user.userId]
+        [req.apiUser?.id]
       );
       const propertyIds = properties.rows.map(p => p.id);
       
@@ -445,13 +447,13 @@ app.get("/api/maintenance", authenticateToken, async (req: Request, res: Respons
         [propertyIds]
       );
       return res.json(result.rows);
-    } else if (req.user?.userType === "tenant") {
+    } else if (req.apiUser?.userType === "tenant") {
       const result = await pool.query(
         `SELECT id, property_id as "propertyId", tenant_id as "tenantId", title, description, 
                 priority, status, category, created_at as "createdAt"
          FROM maintenance_requests WHERE tenant_id = $1
          ORDER BY created_at DESC`,
-        [req.user.userId]
+        [req.apiUser?.id]
       );
       return res.json(result.rows);
     }
@@ -463,14 +465,14 @@ app.get("/api/maintenance", authenticateToken, async (req: Request, res: Respons
 });
 
 app.post("/api/maintenance", authenticateToken, async (req: Request, res: Response) => {
-  if (req.user?.userType !== "tenant") {
+  if (req.apiUser?.userType !== "tenant") {
     return res.status(403).json({ message: "Tenant access only" });
   }
   
   try {
     const leaseResult = await pool.query(
       "SELECT property_id FROM leases WHERE tenant_id = $1 AND status = 'active' LIMIT 1",
-      [req.user.userId]
+      [req.apiUser?.id]
     );
     
     if (leaseResult.rows.length === 0) {
@@ -484,7 +486,7 @@ app.post("/api/maintenance", authenticateToken, async (req: Request, res: Respon
        VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, 'Open', $6, NOW())
        RETURNING id, property_id as "propertyId", tenant_id as "tenantId", title, description, 
                  priority, status, category, created_at as "createdAt"`,
-      [leaseResult.rows[0].property_id, req.user.userId, title, description, priority || "Medium", category]
+      [leaseResult.rows[0].property_id, req.apiUser?.id, title, description, priority || "Medium", category]
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {
@@ -494,7 +496,7 @@ app.post("/api/maintenance", authenticateToken, async (req: Request, res: Respon
 });
 
 app.get("/api/documents", authenticateToken, async (req: Request, res: Response) => {
-  if (req.user?.userType !== "tenant") {
+  if (req.apiUser?.userType !== "tenant") {
     return res.status(403).json({ message: "Tenant access only" });
   }
   
@@ -503,7 +505,7 @@ app.get("/api/documents", authenticateToken, async (req: Request, res: Response)
       `SELECT id, tenant_id as "tenantId", name, type, url, created_at as "createdAt"
        FROM documents WHERE tenant_id = $1
        ORDER BY created_at DESC`,
-      [req.user.userId]
+      [req.apiUser?.id]
     );
     res.json(result.rows);
   } catch (error) {
@@ -513,7 +515,7 @@ app.get("/api/documents", authenticateToken, async (req: Request, res: Response)
 });
 
 app.post("/api/documents", authenticateToken, async (req: Request, res: Response) => {
-  if (req.user?.userType !== "tenant") {
+  if (req.apiUser?.userType !== "tenant") {
     return res.status(403).json({ message: "Tenant access only" });
   }
   
@@ -524,7 +526,7 @@ app.post("/api/documents", authenticateToken, async (req: Request, res: Response
       `INSERT INTO documents (id, tenant_id, name, type, url, created_at)
        VALUES (gen_random_uuid(), $1, $2, $3, $4, NOW())
        RETURNING id, tenant_id as "tenantId", name, type, url, created_at as "createdAt"`,
-      [req.user.userId, name, type, url]
+      [req.apiUser?.id, name, type, url]
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {
@@ -534,7 +536,7 @@ app.post("/api/documents", authenticateToken, async (req: Request, res: Response
 });
 
 app.get("/api/documents/:id/download", authenticateToken, async (req: Request, res: Response) => {
-  if (req.user?.userType !== "tenant") {
+  if (req.apiUser?.userType !== "tenant") {
     return res.status(403).json({ message: "Tenant access only" });
   }
   

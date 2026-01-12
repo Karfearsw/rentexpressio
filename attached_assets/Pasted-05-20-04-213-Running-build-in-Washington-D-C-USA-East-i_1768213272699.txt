@@ -1,0 +1,71 @@
+05:20:04.213 Running build in Washington, D.C., USA (East) – iad1
+05:20:04.214 Build machine configuration: 2 cores, 8 GB
+05:20:04.344 Cloning github.com/Karfearsw/rentexpressio (Branch: main, Commit: acb7203)
+05:20:04.885 Cloning completed: 540.000ms
+05:20:05.717 Restored build cache from previous deployment (37Z9QvdRF49Ss1iWHq6jb7XLLTpS)
+05:20:06.468 Running "vercel build"
+05:20:06.894 Vercel CLI 50.1.6
+05:20:07.667 Installing dependencies...
+05:20:09.224 
+05:20:09.226 added 18 packages in 1s
+05:20:09.226 
+05:20:09.227 42 packages are looking for funding
+05:20:09.227   run `npm fund` for details
+05:20:09.358 
+05:20:09.359 > rest-express@1.0.0 build
+05:20:09.359 > tsx script/build.ts
+05:20:09.359 
+05:20:10.424 building client...
+05:20:10.683 [36mvite v7.1.12 [32mbuilding for production...[36m[39m
+05:20:10.990 transforming...
+05:20:15.997 [32m✓[39m 2761 modules transformed.
+05:20:16.315 rendering chunks...
+05:20:16.616 [meta-images] no Replit deployment domain found, skipping meta tag updates
+05:20:16.624 computing gzip size...
+05:20:16.654 [2m../dist/public/[22m[32mindex.html                                                                 [39m[1m[2m    1.51 kB[22m[1m[22m[2m │ gzip:   0.61 kB[22m
+05:20:16.655 [2m../dist/public/[22m[2massets/[22m[32mmodern_property_management_dashboard_abstract_concept-DxpFD9QJ.png  [39m[1m[2m1,120.76 kB[22m[1m[22m
+05:20:16.655 [2m../dist/public/[22m[2massets/[22m[35mindex-CaLwsJkE.css                                                  [39m[1m[2m  123.22 kB[22m[1m[22m[2m │ gzip:  19.82 kB[22m
+05:20:16.655 [2m../dist/public/[22m[2massets/[22m[36mvendor-BGC0Bdnu.js                                                  [39m[1m[2m   17.29 kB[22m[1m[22m[2m │ gzip:   6.58 kB[22m
+05:20:16.655 [2m../dist/public/[22m[2massets/[22m[36mquery-DezLVW3k.js                                                   [39m[1m[2m   33.28 kB[22m[1m[22m[2m │ gzip:   9.88 kB[22m
+05:20:16.656 [2m../dist/public/[22m[2massets/[22m[36mui-OLyEoeOL.js                                                      [39m[1m[2m   49.86 kB[22m[1m[22m[2m │ gzip:  14.13 kB[22m
+05:20:16.656 [2m../dist/public/[22m[2massets/[22m[36mindex-BW28a3GC.js                                                   [39m[1m[33m  789.89 kB[39m[22m[2m │ gzip: 214.78 kB[22m
+05:20:16.656 [32m✓ built in 5.70s[39m
+05:20:16.656 [33m
+05:20:16.656 (!) Some chunks are larger than 500 kB after minification. Consider:
+05:20:16.657 - Using dynamic import() to code-split the application
+05:20:16.657 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+05:20:16.657 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+05:20:16.657 building server...
+05:20:16.854 
+05:20:16.854   dist/index.cjs  1.1mb ⚠️
+05:20:16.855 
+05:20:16.857 ⚡ Done in 195ms
+05:20:17.194 Using TypeScript 5.6.3 (local user-provided)
+05:20:23.256 api/index.ts(36,7): error TS2717: Subsequent property declarations must have the same type.  Property 'user' must be of type 'User | undefined', but here has type 'JWTPayload | undefined'.
+05:20:23.257 api/index.ts(71,5): error TS2739: Type 'JWTPayload' is missing the following properties from type 'User': id, password
+05:20:23.257 api/index.ts(84,7): error TS2739: Type 'JWTPayload' is missing the following properties from type 'User': id, password
+05:20:23.257 api/index.ts(182,17): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.257 api/index.ts(221,17): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.257 api/index.ts(242,17): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.258 api/index.ts(256,19): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.258 api/index.ts(278,19): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.258 api/index.ts(301,45): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.258 api/index.ts(318,19): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.259 api/index.ts(346,19): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.259 api/index.ts(365,17): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.260 api/index.ts(379,41): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.260 api/index.ts(396,32): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.262 api/index.ts(432,19): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.263 api/index.ts(454,19): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.263 api/index.ts(473,17): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.263 api/index.ts(487,50): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.263 api/index.ts(506,17): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.264 api/index.ts(527,17): error TS2339: Property 'userId' does not exist on type 'User'.
+05:20:23.264 
+05:20:24.364 Build Completed in /vercel/output [17s]
+05:20:24.475 Deploying outputs...
+05:20:29.728 Deployment completed
+05:20:30.670 Creating build cache...
+05:20:50.205 Created build cache: 19.531s
+05:20:50.206 Uploading build cache [56.59 MB]
+05:20:51.011 Build cache uploaded: 808.549ms
