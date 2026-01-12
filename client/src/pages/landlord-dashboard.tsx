@@ -111,12 +111,13 @@ export default function LandlordDashboard() {
         </div>
 
         {/* Real-Time Rent Roll */}
-        <Card>
+        <Card className="overflow-hidden">
           <CardHeader>
             <CardTitle>Live Rent Roll</CardTitle>
             <CardDescription>Current month payment status by unit</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0 sm:p-6">
+            <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -166,6 +167,7 @@ export default function LandlordDashboard() {
                 })}
               </TableBody>
             </Table>
+            </div>
           </CardContent>
         </Card>
       </div>
