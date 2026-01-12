@@ -1,0 +1,50 @@
+00:32:57.464 Running build in Washington, D.C., USA (East) – iad1
+00:32:57.471 Build machine configuration: 2 cores, 8 GB
+00:32:57.892 Cloning github.com/Karfearsw/rentexpressio (Branch: main, Commit: 80ee7cd)
+00:32:59.475 Cloning completed: 1.583s
+00:32:59.839 Restored build cache from previous deployment (N4PhpGarAFddrKAy3KmuBSWgx7tD)
+00:33:00.803 Running "vercel build"
+00:33:01.259 Vercel CLI 50.1.6
+00:33:01.867 Installing dependencies...
+00:33:03.461 
+00:33:03.462 up to date in 1s
+00:33:03.462 
+00:33:03.462 42 packages are looking for funding
+00:33:03.463   run `npm fund` for details
+00:33:03.499 Running "npm run build"
+00:33:03.604 
+00:33:03.605 > rest-express@1.0.0 build
+00:33:03.605 > tsx script/build.ts
+00:33:03.605 
+00:33:04.648 building client...
+00:33:04.962 [36mvite v7.1.12 [32mbuilding for production...[36m[39m
+00:33:05.318 transforming...
+00:33:10.448 [32m✓[39m 2761 modules transformed.
+00:33:10.789 rendering chunks...
+00:33:11.119 [meta-images] no Replit deployment domain found, skipping meta tag updates
+00:33:11.127 computing gzip size...
+00:33:11.159 [2m../dist/public/[22m[32mindex.html                                                                 [39m[1m[2m    1.51 kB[22m[1m[22m[2m │ gzip:   0.61 kB[22m
+00:33:11.160 [2m../dist/public/[22m[2massets/[22m[32mmodern_property_management_dashboard_abstract_concept-DxpFD9QJ.png  [39m[1m[2m1,120.76 kB[22m[1m[22m
+00:33:11.160 [2m../dist/public/[22m[2massets/[22m[35mindex-CaLwsJkE.css                                                  [39m[1m[2m  123.22 kB[22m[1m[22m[2m │ gzip:  19.82 kB[22m
+00:33:11.161 [2m../dist/public/[22m[2massets/[22m[36mvendor-BGC0Bdnu.js                                                  [39m[1m[2m   17.29 kB[22m[1m[22m[2m │ gzip:   6.58 kB[22m
+00:33:11.161 [2m../dist/public/[22m[2massets/[22m[36mquery-DezLVW3k.js                                                   [39m[1m[2m   33.28 kB[22m[1m[22m[2m │ gzip:   9.88 kB[22m
+00:33:11.161 [2m../dist/public/[22m[2massets/[22m[36mui-OLyEoeOL.js                                                      [39m[1m[2m   49.86 kB[22m[1m[22m[2m │ gzip:  14.13 kB[22m
+00:33:11.161 [2m../dist/public/[22m[2massets/[22m[36mindex-BW28a3GC.js                                                   [39m[1m[33m  789.89 kB[39m[22m[2m │ gzip: 214.78 kB[22m
+00:33:11.161 [32m✓ built in 5.88s[39m
+00:33:11.161 building server...
+00:33:11.168 [33m
+00:33:11.168 (!) Some chunks are larger than 500 kB after minification. Consider:
+00:33:11.169 - Using dynamic import() to code-split the application
+00:33:11.169 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+00:33:11.169 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+00:33:11.381 
+00:33:11.381   dist/index.cjs  1.1mb ⚠️
+00:33:11.382 
+00:33:11.382 ⚡ Done in 211ms
+00:33:11.531 Build Completed in /vercel/output [10s]
+00:33:11.562 Deploying outputs...
+00:33:13.995 Deployment completed
+00:33:14.922 Creating build cache...
+00:33:29.318 Created build cache: 14.394s
+00:33:29.318 Uploading build cache [56.46 MB]
+00:33:30.113 Build cache uploaded: 794.812ms
