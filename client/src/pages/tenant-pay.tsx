@@ -66,7 +66,7 @@ export default function TenantPay() {
   
   // Determine if paid this month
   const currentMonth = new Date().getMonth();
-  const paidThisMonth = payments?.some(p => new Date(p.date || "").getMonth() === currentMonth && p.status === 'Paid');
+  const paidThisMonth = payments?.some(p => new Date(p.date || "").getMonth() === currentMonth && p.status === 'paid');
   
   const amountDue = paidThisMonth ? 0 : Number(currentLease?.rent || 0);
 
