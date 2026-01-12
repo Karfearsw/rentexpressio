@@ -14,21 +14,31 @@ export const users = pgTable("users", {
 
 export const properties = pgTable("properties", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  landlordId: varchar("landlord_id").notNull(), // Foreign key to users.id
+  landlordId: varchar("landlord_id").notNull(),
   name: text("name").notNull(),
   address: text("address").notNull(),
-  unitCount: text("unit_count").default("1"),
+  city: text("city"),
+  state: text("state"),
+  zip: text("zip"),
+  type: text("type"),
+  bedrooms: text("bedrooms"),
+  bathrooms: text("bathrooms"),
+  squareFeet: text("square_feet"),
+  rent: text("rent"),
+  status: text("status").default("Vacant"),
 });
 
 export const leases = pgTable("leases", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   propertyId: varchar("property_id").notNull(),
-  tenantId: varchar("tenant_id").notNull(), // Foreign key to users.id
+  tenantId: varchar("tenant_id").notNull(),
+  landlordId: varchar("landlord_id").notNull(),
   startDate: text("start_date").notNull(),
   endDate: text("end_date").notNull(),
-  rentAmount: text("rent_amount").notNull(), // Store as string decimal or integer cents
-  status: text("status").notNull().default("active"), // active, ended, pending
-  autopayEnabled: text("autopay_enabled").notNull().default("false"), // true, false
+  rent: text("rent").notNull(),
+  deposit: text("deposit"),
+  status: text("status").notNull().default("active"),
+  autopayEnabled: text("autopay_enabled").notNull().default("false"),
 });
 
 export const documents = pgTable("documents", {
@@ -45,19 +55,20 @@ export const payments = pgTable("payments", {
   leaseId: varchar("lease_id").notNull(),
   tenantId: varchar("tenant_id").notNull(),
   amount: text("amount").notNull(),
-  dueDate: text("due_date").notNull(),
-  status: text("status").notNull().default("pending"), // pending, paid, overdue, failed
-  paidDate: text("paid_date"),
+  date: text("date").notNull(),
+  status: text("status").notNull().default("Pending"),
+  method: text("method"),
 });
 
 export const maintenanceRequests = pgTable("maintenance_requests", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   propertyId: varchar("property_id").notNull(),
   tenantId: varchar("tenant_id").notNull(),
-  category: text("category").notNull(), // plumbing, electrical, etc.
+  title: text("title").notNull(),
   description: text("description").notNull(),
-  priority: text("priority").notNull().default("normal"), // low, normal, urgent, emergency
-  status: text("status").notNull().default("open"), // open, in_progress, resolved, closed
+  priority: text("priority").notNull().default("Medium"),
+  status: text("status").notNull().default("Open"),
+  category: text("category"),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
 });
 
