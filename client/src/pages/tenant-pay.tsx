@@ -66,9 +66,9 @@ export default function TenantPay() {
   
   // Determine if paid this month
   const currentMonth = new Date().getMonth();
-  const paidThisMonth = payments?.some(p => new Date(p.paidDate || "").getMonth() === currentMonth && p.status === 'paid');
+  const paidThisMonth = payments?.some(p => new Date(p.date || "").getMonth() === currentMonth && p.status === 'Paid');
   
-  const amountDue = paidThisMonth ? 0 : Number(currentLease?.rentAmount || 0);
+  const amountDue = paidThisMonth ? 0 : Number(currentLease?.rent || 0);
 
   const handlePay = () => {
     if (amountDue > 0) {
@@ -167,7 +167,7 @@ export default function TenantPay() {
                       <div className="space-y-2 pt-2 text-sm">
                         <div className="flex justify-between">
                           <span>Base Rent</span>
-                          <span>${currentLease?.rentAmount || "0"}</span>
+                          <span>${currentLease?.rent || "0"}</span>
                         </div>
                         <div className="flex justify-between text-muted-foreground">
                           <span>Utilities (Water/Trash)</span>
@@ -179,7 +179,7 @@ export default function TenantPay() {
                         </div>
                         <div className="border-t pt-2 mt-2 flex justify-between font-medium">
                           <span>Total</span>
-                          <span>${currentLease?.rentAmount || "0"}</span>
+                          <span>${currentLease?.rent || "0"}</span>
                         </div>
                       </div>
                     </AccordionContent>
@@ -188,11 +188,12 @@ export default function TenantPay() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="overflow-hidden">
               <CardHeader>
                 <CardTitle>Payment History</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-0 sm:p-6">
+                <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -214,7 +215,7 @@ export default function TenantPay() {
                     )}
                     {payments?.map((payment) => (
                       <TableRow key={payment.id}>
-                        <TableCell>{new Date(payment.paidDate || "").toLocaleDateString()}</TableCell>
+                        <TableCell>{new Date(payment.date || "").toLocaleDateString()}</TableCell>
                         <TableCell>Rent Payment</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-1">
@@ -236,6 +237,7 @@ export default function TenantPay() {
                     ))}
                   </TableBody>
                 </Table>
+                </div>
               </CardContent>
             </Card>
           </div>
