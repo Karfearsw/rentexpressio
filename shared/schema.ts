@@ -9,7 +9,7 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
   userType: text("user_type").notNull(),
   // Store profile data as JSONB for flexibility across roles
-  profileData: jsonb("profile_data").notNull(), 
+  profileData: jsonb("profile_data").default({}), 
 });
 
 export const properties = pgTable("properties", {
